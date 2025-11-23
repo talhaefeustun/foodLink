@@ -23,11 +23,13 @@
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
                     keyframes: {
                         fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        pop: { '0%': { transform: 'scale(0.95)' }, '100%': { transform: 'scale(1)' } }
+                        pop: { '0%': { transform: 'scale(0.95)' }, '100%': { transform: 'scale(1)' } },
+                        shake: { '0%, 100%': { transform: 'translateX(0)' }, '25%': { transform: 'translateX(-5px)' }, '75%': { transform: 'translateX(5px)' } }
                     },
                     animation: {
                         fadeIn: 'fadeIn 0.5s ease-out forwards',
                         pop: 'pop 0.2s ease-out forwards',
+                        shake: 'shake 0.3s ease-in-out',
                     }
                 }
             }
@@ -58,38 +60,97 @@
         const User = (p) => <IconBase {...p}><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></IconBase>;
         const Bell = (p) => <IconBase {...p}><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></IconBase>;
         const Clock = (p) => <IconBase {...p}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></IconBase>;
-        const ChevronRight = (p) => <IconBase {...p}><path d="m9 18 6-6-6-6"/></IconBase>;
         const MapPin = (p) => <IconBase {...p}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></IconBase>;
         const Leaf = (p) => <IconBase {...p}><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></IconBase>;
         const ArrowRight = (p) => <IconBase {...p}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></IconBase>;
         const Menu = (p) => <IconBase {...p}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></IconBase>;
-        const X = (p) => <IconBase {...p}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></IconBase>;
-        const Search = (p) => <IconBase {...p}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></IconBase>;
         const Filter = (p) => <IconBase {...p}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></IconBase>;
-        const Trophy = (p) => <IconBase {...p}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></IconBase>;
-        const BarChart = (p) => <IconBase {...p}><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></IconBase>;
         const PlusCircle = (p) => <IconBase {...p}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></IconBase>;
         const Camera = (p) => <IconBase {...p}><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></IconBase>;
-        const Upload = (p) => <IconBase {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></IconBase>;
+        const Lock = (p) => <IconBase {...p}><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></IconBase>;
+        const LogOut = (p) => <IconBase {...p}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></IconBase>;
 
-        // --- DATA ---
-        // EMPTY INITIAL DATA (Using LocalStorage instead)
-        const initialSurplusData = []; 
+        // --- AUTH CONFIG ---
+        const STAFF_CREDENTIALS = [
+            { user: "admin_muh", pass: "muh123", name: "Engineering Staff" },
+            { user: "admin_merkez", pass: "mrkz456", name: "Central Staff" },
+            { user: "admin_iktisat", pass: "ikt789", name: "Econ Staff" },
+            { user: "admin_hazirlik", pass: "hzr321", name: "Prep School Staff" },
+            { user: "mudur_genel", pass: "foodlink2024", name: "General Manager" }
+        ];
 
+        // --- MOCK DATA ---
         const menuData = [
             { cafe: "Engineering Fac.", main: "Forest Kebab", side: "Bulgur Pilaf", cal: 850, type: "Standard", occupancy: 85 },
             { cafe: "Economics Fac.", main: "Baked Pasta", side: "Purslane Salad", cal: 720, type: "Vegetarian", occupancy: 40 },
         ];
 
-        const communityData = [
-            { rank: 1, name: "Sarah Miller", points: 1250, avatar: "https://i.pravatar.cc/150?u=a042581f4e29026024d" },
-            { rank: 2, name: "John Doe", points: 980, avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d" },
-        ];
-
         // --- COMPONENTS ---
 
-        // ADD SURPLUS SCREEN
-        const AddSurplusScreen = ({ onAdd, onCancel }) => {
+        // 1. STAFF LOGIN SCREEN
+        const StaffLoginScreen = ({ onLogin, onCancel }) => {
+            const [username, setUsername] = useState('');
+            const [password, setPassword] = useState('');
+            const [error, setError] = useState('');
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                const staff = STAFF_CREDENTIALS.find(c => c.user === username && c.pass === password);
+                
+                if (staff) {
+                    onLogin(staff);
+                } else {
+                    setError('Invalid credentials');
+                    setTimeout(() => setError(''), 2000); // Clear error after 2s
+                }
+            };
+
+            return (
+                <div className="flex flex-col items-center justify-center min-h-[70vh] animate-fadeIn px-4">
+                    <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 w-full max-w-sm text-center">
+                        <div className="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <Lock className="text-emerald-600" size={32} />
+                        </div>
+                        <h2 className="text-2xl font-bold text-slate-800 mb-2">Staff Access</h2>
+                        <p className="text-slate-500 mb-6 text-sm">Please log in to post surplus food.</p>
+
+                        <form onSubmit={handleLogin} className="space-y-4">
+                            <input 
+                                type="text" 
+                                placeholder="Username" 
+                                className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                                value={username}
+                                onChange={e => setUsername(e.target.value)}
+                            />
+                            <input 
+                                type="password" 
+                                placeholder="Password" 
+                                className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                            />
+                            
+                            {error && (
+                                <div className="text-rose-500 text-sm font-bold animate-shake bg-rose-50 py-2 rounded-lg">
+                                    {error}
+                                </div>
+                            )}
+
+                            <button type="submit" className="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition">
+                                Login
+                            </button>
+                        </form>
+
+                        <button onClick={onCancel} className="mt-6 text-slate-400 text-sm hover:text-slate-600 font-medium">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        // 2. ADD SURPLUS SCREEN
+        const AddSurplusScreen = ({ onAdd, onCancel, currentUser, onLogout }) => {
             const [formData, setFormData] = useState({
                 meal: '',
                 cafeteria: 'Engineering Cafeteria',
@@ -119,6 +180,7 @@
                 
                 onAdd({
                     ...formData,
+                    postedBy: currentUser.name, // Track who posted
                     image: previewUrl || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
                     postedAt: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
                 });
@@ -126,9 +188,24 @@
 
             return (
                 <div className="max-w-xl mx-auto animate-fadeIn pb-24">
-                    <div className="flex items-center gap-2 mb-6 text-slate-500 cursor-pointer" onClick={onCancel}>
-                        <ArrowRight className="rotate-180" size={20} />
-                        <span>Back to Home</span>
+                    <div className="flex justify-between items-center mb-6">
+                        <div className="flex items-center gap-2 text-slate-500 cursor-pointer" onClick={onCancel}>
+                            <ArrowRight className="rotate-180" size={20} />
+                            <span>Back</span>
+                        </div>
+                        <button onClick={onLogout} className="flex items-center gap-1 text-rose-500 text-sm font-bold bg-rose-50 px-3 py-1 rounded-lg hover:bg-rose-100">
+                            <LogOut size={14} /> Logout
+                        </button>
+                    </div>
+
+                    <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl mb-6 flex items-center justify-between">
+                         <div>
+                             <p className="text-xs text-emerald-600 font-bold uppercase tracking-wider">Logged in as</p>
+                             <p className="font-bold text-slate-800">{currentUser.name}</p>
+                         </div>
+                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-emerald-600 shadow-sm">
+                             <User size={20} />
+                         </div>
                     </div>
 
                     <h2 className="text-2xl font-bold text-slate-800 mb-6">Post Surplus Food</h2>
@@ -193,8 +270,8 @@
             );
         };
 
-        // HOME SCREEN
-        const HomeScreen = ({ setActiveTab, surplusItems, toggleReserve, filterType, setFilterType }) => {
+        // 3. HOME SCREEN
+        const HomeScreen = ({ setActiveTab, surplusItems, toggleReserve, filterType, setFilterType, handleStaffClick }) => {
             const activeItems = surplusItems.filter(i => !i.isReserved);
             
             return (
@@ -209,7 +286,7 @@
                             </div>
                             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">End Food Waste on <br/> <span className="text-emerald-200">Your Campus!</span></h1>
                             <div className="flex gap-4 pt-2">
-                                <button onClick={() => setActiveTab('add-surplus')} className="bg-white text-emerald-800 px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-emerald-50 transition-colors flex items-center gap-2"><PlusCircle size={20} /> Post Surplus</button>
+                                <button onClick={handleStaffClick} className="bg-white text-emerald-800 px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-emerald-50 transition-colors flex items-center gap-2"><PlusCircle size={20} /> Post Surplus</button>
                                 <button onClick={() => setActiveTab('waste')} className="px-6 py-3 rounded-xl font-bold border border-emerald-300/50 hover:bg-emerald-700/50 transition-colors text-white">View Report</button>
                             </div>
                         </div>
@@ -225,7 +302,7 @@
                         <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-3">🚨 Surplus Food <span className="text-sm font-bold text-rose-600 bg-rose-100 px-3 py-1 rounded-full">{activeItems.length} Active</span></h2>
                         <div className="flex gap-2">
                             <button onClick={() => setFilterType(filterType === 'all' ? 'Vegetarian' : 'all')} className={`flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition ${filterType !== 'all' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-white'}`}><Filter size={16} /> {filterType === 'all' ? 'Filter' : 'Veg Only'}</button>
-                            <button onClick={() => setActiveTab('add-surplus')} className="md:hidden bg-emerald-600 text-white p-2 rounded-lg shadow-md"><PlusCircle size={20}/></button>
+                            <button onClick={handleStaffClick} className="md:hidden bg-emerald-600 text-white p-2 rounded-lg shadow-md"><PlusCircle size={20}/></button>
                         </div>
                     </div>
                     {surplusItems.length === 0 ? (
@@ -247,6 +324,7 @@
                                     <div>
                                         <div className="flex items-center gap-2 text-slate-500 text-xs mb-2 font-medium uppercase"><span className="text-emerald-600">{item.cafeteria}</span> • <span>{item.type}</span></div>
                                         <h3 className="font-bold text-slate-800 text-lg leading-tight mb-1">{item.meal}</h3>
+                                        <p className="text-xs text-slate-400 mt-1">Posted by: {item.postedBy || 'Staff'}</p>
                                     </div>
                                     <div className="mt-5 pt-4 border-t border-slate-100 flex justify-between items-center">
                                         <div className="flex items-center gap-1.5 text-rose-600 text-xs font-bold bg-rose-50 border border-rose-100 px-2.5 py-1.5 rounded-lg"><Clock size={14} /><span>Exp: {item.expiresAt}</span></div>
@@ -277,7 +355,7 @@
         );
         };
 
-        // 2. CAFETERIAS SCREEN (UPDATED WITH UofT MAP)
+        // 4. CAFETERIAS SCREEN
         const CafeteriasScreen = () => (
             <div className="space-y-8 animate-fadeIn">
                 <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col items-center text-center">
@@ -285,21 +363,9 @@
                      <h2 className="text-2xl font-bold text-slate-800">Campus Map & Cafeterias</h2>
                      <p className="text-slate-500 mb-6">Explore dining locations across UofT St. George campus.</p>
                      
-                     {/* Map Iframe */}
                      <div className="w-full h-96 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 relative group">
-                        <iframe 
-                            src="https://map.utoronto.ca/?id=1809#!ct/45469?s/"
-                            className="w-full h-full border-0"
-                            allowFullScreen
-                            loading="lazy"
-                            title="UofT Map"
-                        ></iframe>
-                        <a 
-                            href="https://map.utoronto.ca/?id=1809#!ct/45469?s/" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-slate-800 px-4 py-2 rounded-lg text-xs font-bold shadow-lg hover:bg-emerald-600 hover:text-white transition-colors flex items-center gap-2"
-                        >
+                        <iframe src="https://map.utoronto.ca/?id=1809#!ct/45469?s/" className="w-full h-full border-0" allowFullScreen loading="lazy" title="UofT Map"></iframe>
+                        <a href="https://map.utoronto.ca/?id=1809#!ct/45469?s/" target="_blank" rel="noopener noreferrer" className="absolute bottom-4 right-4 bg-white/90 backdrop-blur text-slate-800 px-4 py-2 rounded-lg text-xs font-bold shadow-lg hover:bg-emerald-600 hover:text-white transition-colors flex items-center gap-2">
                             Open Full Map <ArrowRight size={12} />
                         </a>
                      </div>
@@ -341,6 +407,7 @@
         // --- MAIN APP ---
         const App = () => {
             const [activeTab, setActiveTab] = useState('home');
+            const [loggedInUser, setLoggedInUser] = useState(null); // AUTH STATE
             
             // LAZY INITIALIZATION FROM LOCAL STORAGE
             const [surplusItems, setSurplusItems] = useState(() => {
@@ -378,10 +445,25 @@
                 setSurplusItems(surplusItems.map(item => item.id === id ? { ...item, isReserved: true } : item));
             };
 
+            // AUTH HANDLER
+            const handleStaffClick = () => {
+                if (loggedInUser) {
+                    setActiveTab('add-surplus');
+                } else {
+                    setActiveTab('staff-login');
+                }
+            };
+
+            const handleLogin = (user) => {
+                setLoggedInUser(user);
+                setActiveTab('add-surplus');
+            };
+
             const renderContent = () => {
                 switch (activeTab) {
-                    case 'home': return <HomeScreen setActiveTab={setActiveTab} surplusItems={surplusItems} toggleReserve={toggleReserve} filterType={filterType} setFilterType={setFilterType} />;
-                    case 'add-surplus': return <AddSurplusScreen onAdd={addSurplusItem} onCancel={() => setActiveTab('home')} />;
+                    case 'home': return <HomeScreen setActiveTab={setActiveTab} surplusItems={surplusItems} toggleReserve={toggleReserve} filterType={filterType} setFilterType={setFilterType} handleStaffClick={handleStaffClick} />;
+                    case 'staff-login': return <StaffLoginScreen onLogin={handleLogin} onCancel={() => setActiveTab('home')} />;
+                    case 'add-surplus': return loggedInUser ? <AddSurplusScreen onAdd={addSurplusItem} onCancel={() => setActiveTab('home')} currentUser={loggedInUser} onLogout={() => { setLoggedInUser(null); setActiveTab('home'); }} /> : <StaffLoginScreen onLogin={handleLogin} onCancel={() => setActiveTab('home')} />;
                     case 'cafeterias': return <CafeteriasScreen />;
                     case 'waste': return <PlaceholderScreen title="Waste Tracking" icon={Trash2} />;
                     case 'community': return <PlaceholderScreen title="Community" icon={Users} />;
@@ -412,7 +494,7 @@
                                             {item.label}
                                         </button>
                                     ))}
-                                    <button onClick={() => setActiveTab('add-surplus')} className="ml-2 bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 transition flex items-center gap-2"><PlusCircle size={16} /> Staff Post</button>
+                                    <button onClick={handleStaffClick} className="ml-2 bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 transition flex items-center gap-2"><Lock size={16} /> Staff Post</button>
                                 </nav>
                                 <div className="hidden md:flex items-center gap-4">
                                     <button className="relative p-2"><Bell className="w-6 h-6 text-slate-500" /></button>
@@ -426,12 +508,12 @@
                         {isMobileMenuOpen && (
                             <div className="md:hidden bg-white border-t border-slate-100 absolute w-full px-4 py-4 shadow-xl flex flex-col gap-2">
                                 {navItems.map(item => <button key={item.id} onClick={() => {setActiveTab(item.id); setIsMobileMenuOpen(false)}} className="p-4 rounded-xl text-left font-semibold text-slate-500 hover:bg-slate-50">{item.label}</button>)}
-                                <button onClick={() => {setActiveTab('add-surplus'); setIsMobileMenuOpen(false)}} className="p-4 rounded-xl text-left font-semibold text-emerald-600 bg-emerald-50">Post Surplus Food</button>
+                                <button onClick={() => {handleStaffClick(); setIsMobileMenuOpen(false)}} className="p-4 rounded-xl text-left font-semibold text-emerald-600 bg-emerald-50 flex items-center gap-2"><Lock size={16} /> Post Surplus Food</button>
                             </div>
                         )}
                     </header>
                     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-[80vh]">{renderContent()}</main>
-                    <footer className="bg-white border-t border-slate-200 mt-12 py-12 text-center text-slate-400 text-sm">© 2025 FoodLink. All rights reserved. Talha Efe Üstün</footer>
+                    <footer className="bg-white border-t border-slate-200 mt-12 py-12 text-center text-slate-400 text-sm">© 2024 FoodLink. All rights reserved.</footer>
                 </div>
             );
         };
