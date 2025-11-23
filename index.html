@@ -73,10 +73,8 @@
         const Upload = (p) => <IconBase {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></IconBase>;
 
         // --- DATA ---
-        const initialSurplusData = [
-            { id: 1, cafeteria: "Engineering Cafeteria", meal: "Grilled Chicken & Rice", portions: 12, postedAt: "12:45", expiresAt: "13:30", image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=800&q=80", type: "Standard", isReserved: false },
-            { id: 2, cafeteria: "Central Campus", meal: "Lentil Soup & Bread", portions: 5, postedAt: "13:00", expiresAt: "13:45", image: "https://images.unsplash.com/photo-1547592166-23acbe3b624b?auto=format&fit=crop&w=800&q=80", type: "Vegetarian", isReserved: false },
-        ];
+        // EMPTY INITIAL DATA (Using LocalStorage instead)
+        const initialSurplusData = []; 
 
         const menuData = [
             { cafe: "Engineering Fac.", main: "Forest Kebab", side: "Bulgur Pilaf", cal: 850, type: "Standard", occupancy: 85 },
@@ -106,8 +104,13 @@
             const handleImageChange = (e) => {
                 const file = e.target.files[0];
                 if (file) {
-                    setFormData({ ...formData, image: file });
-                    setPreviewUrl(URL.createObjectURL(file));
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        // Store image as Base64 string for LocalStorage persistence
+                        setPreviewUrl(reader.result);
+                        setFormData({ ...formData, image: reader.result });
+                    };
+                    reader.readAsDataURL(file);
                 }
             };
 
@@ -146,7 +149,7 @@
                                         <Camera size={24} className="text-emerald-600" />
                                     </div>
                                     <p className="text-sm text-slate-500 font-medium">Click to upload photo</p>
-                                    <p className="text-xs text-slate-400">JPG, PNG up to 5MB</p>
+                                    <p className="text-xs text-slate-400">JPG, PNG up to 2MB</p>
                                 </>
                             )}
                             <input 
@@ -237,7 +240,10 @@
         };
 
         // HOME SCREEN
-        const HomeScreen = ({ setActiveTab, surplusItems, toggleReserve, filterType, setFilterType }) => (
+        const HomeScreen = ({ setActiveTab, surplusItems, toggleReserve, filterType, setFilterType }) => {
+            const activeItems = surplusItems.filter(i => !i.isReserved);
+            
+            return (
             <div className="space-y-12 pb-12 animate-fadeIn">
                 
                 {/* HERO */}
@@ -274,7 +280,7 @@
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
                             🚨 Surplus Food 
-                            <span className="text-sm font-bold text-rose-600 bg-rose-100 px-3 py-1 rounded-full">{surplusItems.filter(i => !i.isReserved).length} Active</span>
+                            <span className="text-sm font-bold text-rose-600 bg-rose-100 px-3 py-1 rounded-full">{activeItems.length} Active</span>
                         </h2>
                         <div className="flex gap-2">
                             <button onClick={() => setFilterType(filterType === 'all' ? 'Vegetarian' : 'all')} className={`flex items-center gap-2 px-4 py-2 border rounded-lg text-sm font-medium transition ${filterType !== 'all' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-white'}`}>
@@ -285,6 +291,15 @@
                         </div>
                     </div>
                     
+                    {surplusItems.length === 0 ? (
+                        <div className="text-center py-12 bg-white rounded-2xl border border-slate-100">
+                            <div className="bg-slate-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <Leaf className="text-slate-400" size={32} />
+                            </div>
+                            <h3 className="text-lg font-bold text-slate-700">No surplus food at the moment</h3>
+                            <p className="text-slate-500 text-sm">Check back later or post a listing!</p>
+                        </div>
+                    ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {surplusItems.filter(item => filterType === 'all' || item.type === filterType || item.type === 'Vegan').map((item) => (
                             <div key={item.id} className={`group bg-white rounded-2xl p-4 shadow-sm border transition-all duration-300 flex flex-col ${item.isReserved ? 'border-slate-200 opacity-60' : 'border-slate-100 hover:shadow-xl hover:-translate-y-1'}`}>
@@ -306,6 +321,7 @@
                             </div>
                         ))}
                     </div>
+                    )}
                 </section>
                 
                 {/* MENU PREVIEW */}
@@ -325,6 +341,7 @@
                 </section>
             </div>
         );
+        };
 
         // PLACEHOLDER SCREENS
         const PlaceholderScreen = ({ title, icon: Icon }) => (
@@ -338,9 +355,40 @@
         // --- MAIN APP ---
         const App = () => {
             const [activeTab, setActiveTab] = useState('home');
-            const [surplusItems, setSurplusItems] = useState(initialSurplusData);
+            
+            // LAZY INITIALIZATION FROM LOCAL STORAGE
+            const [surplusItems, setSurplusItems] = useState(() => {
+                const saved = localStorage.getItem('foodlink_surplus_data');
+                if (saved) {
+                    try {
+                        const parsedData = JSON.parse(saved);
+                        // Filter out expired items on load
+                        const now = new Date();
+                        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+                        
+                        return parsedData.filter(item => {
+                            // Simple parsing of "HH:MM"
+                            const [hours, minutes] = item.expiresAt.split(':').map(Number);
+                            const itemMinutes = hours * 60 + minutes;
+                            
+                            // If reserved, keep it. If expired, remove it.
+                            if (item.isReserved) return true;
+                            return itemMinutes > currentMinutes;
+                        });
+                    } catch(e) {
+                        return [];
+                    }
+                }
+                return [];
+            });
+
             const [filterType, setFilterType] = useState('all');
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+            // SAVE TO LOCAL STORAGE WHENEVER DATA CHANGES
+            useEffect(() => {
+                localStorage.setItem('foodlink_surplus_data', JSON.stringify(surplusItems));
+            }, [surplusItems]);
 
             // Add new item function
             const addSurplusItem = (newItem) => {
