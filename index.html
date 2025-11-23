@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodLink - Kampüs Gıda Kurtarma</title>
+    <title>FoodLink - Campus Food Rescue</title>
     
     <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     
-    <!-- Babel (JSX derlemek için) -->
+    <!-- Babel (for compiling JSX) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <!-- Tailwind CSS -->
@@ -42,7 +42,7 @@
 
     <style>
         body { font-family: 'Inter', sans-serif; }
-        /* Scrollbar Gizleme */
+        /* Hide Scrollbar */
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
@@ -58,7 +58,7 @@
     <script type="text/babel">
         const { useState } = React;
 
-        // --- IKONLAR (Lucide Icons SVG Components) ---
+        // --- ICONS (Lucide Icons SVG Components) ---
         const IconBase = ({ size = 24, className = "", children }) => (
             <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -95,47 +95,47 @@
         const surplusData = [
             {
                 id: 1,
-                cafeteria: "Mühendislik Yemekhanesi",
-                meal: "Izgara Tavuk & Pilav",
+                cafeteria: "Engineering Cafeteria",
+                meal: "Grilled Chicken & Rice",
                 portions: 12,
                 postedAt: "12:45",
                 expiresAt: "13:30",
                 image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=800&q=80",
-                originalPrice: "₺60",
-                discountedPrice: "Ücretsiz"
+                originalPrice: "$5.00",
+                discountedPrice: "Free"
             },
             {
                 id: 2,
-                cafeteria: "Merkez Kampüs",
-                meal: "Mercimek Çorbası & Ekmek",
+                cafeteria: "Central Campus",
+                meal: "Lentil Soup & Bread",
                 portions: 5,
                 postedAt: "13:00",
                 expiresAt: "13:45",
                 image: "https://images.unsplash.com/photo-1547592166-23acbe3b624b?auto=format&fit=crop&w=800&q=80",
-                originalPrice: "₺25",
-                discountedPrice: "Ücretsiz"
+                originalPrice: "$2.00",
+                discountedPrice: "Free"
             },
             {
                 id: 3,
-                cafeteria: "İktisat Fakültesi",
-                meal: "Sebzeli Makarna",
+                cafeteria: "Faculty of Economics",
+                meal: "Vegetable Pasta",
                 portions: 8,
                 postedAt: "13:15",
                 expiresAt: "14:00",
                 image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=800&q=80",
-                originalPrice: "₺40",
-                discountedPrice: "Ücretsiz"
+                originalPrice: "$3.50",
+                discountedPrice: "Free"
             }
         ];
 
         const menuData = [
-            { cafe: "Mühendislik Fak.", main: "Orman Kebabı", side: "Bulgur Pilavı", cal: 850, type: "Standart" },
-            { cafe: "İktisat Fak.", main: "Fırın Makarna", side: "Yoğurtlu Semizotu", cal: 720, type: "Vejetaryen" },
-            { cafe: "Hazırlık Binası", main: "Kuru Fasulye", side: "Pirinç Pilavı", cal: 780, type: "Vegan" },
-            { cafe: "Mimarlık Fak.", main: "Izgara Köfte", side: "Patates Püresi", cal: 900, type: "Standart" },
+            { cafe: "Engineering Fac.", main: "Forest Kebab", side: "Bulgur Pilaf", cal: 850, type: "Standard" },
+            { cafe: "Economics Fac.", main: "Baked Pasta", side: "Purslane Salad", cal: 720, type: "Vegetarian" },
+            { cafe: "Prep School", main: "Haricot Beans", side: "Rice Pilaf", cal: 780, type: "Vegan" },
+            { cafe: "Architecture Fac.", main: "Grilled Meatballs", side: "Mashed Potatoes", cal: 900, type: "Standard" },
         ];
 
-        // --- BİLEŞENLER (Components) ---
+        // --- COMPONENTS ---
 
         // 1. HOME SCREEN
         const HomeScreen = () => (
@@ -150,20 +150,20 @@
                         <div className="space-y-4">
                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/30 border border-emerald-400/30 text-emerald-100 text-xs font-bold uppercase tracking-wider">
                                 <Leaf size={14} />
-                                <span>Bugünün Etkisi</span>
+                                <span>Today's Impact</span>
                             </div>
                             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                                Kampüsünde Gıda İsrafına <br/> <span className="text-emerald-200">Son Ver!</span>
+                                End Food Waste on <br/> <span className="text-emerald-200">Your Campus!</span>
                             </h1>
                             <p className="text-emerald-100 text-lg max-w-md">
-                                Bugün 18kg yemek kurtarıldı ve 12kg kompost üretildi. Hedefe ulaşmak için bize katıl.
+                                18kg of food saved and 12kg of compost produced today. Join us to reach the goal.
                             </p>
                             <div className="flex gap-4 pt-2">
                                 <button className="bg-white text-emerald-800 px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-emerald-50 transition-colors">
-                                    Hemen Katıl
+                                    Join Now
                                 </button>
                                 <button className="px-6 py-3 rounded-xl font-bold border border-emerald-300/50 hover:bg-emerald-700/50 transition-colors text-white">
-                                    Raporu Gör
+                                    View Report
                                 </button>
                             </div>
                         </div>
@@ -171,11 +171,11 @@
                         {/* Stats Cards in Hero */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/10 text-center hover:bg-white/20 transition-colors">
-                                <p className="text-emerald-100 text-sm font-medium mb-2">Kurtarılan Yemek</p>
+                                <p className="text-emerald-100 text-sm font-medium mb-2">Food Rescued</p>
                                 <p className="text-4xl md:text-5xl font-bold">18 <span className="text-xl font-normal opacity-70">kg</span></p>
                             </div>
                             <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/10 text-center hover:bg-white/20 transition-colors">
-                                <p className="text-emerald-100 text-sm font-medium mb-2">Kompost Üretimi</p>
+                                <p className="text-emerald-100 text-sm font-medium mb-2">Compost Production</p>
                                 <p className="text-4xl md:text-5xl font-bold">12 <span className="text-xl font-normal opacity-70">kg</span></p>
                             </div>
                         </div>
@@ -187,19 +187,19 @@
                     <div className="flex flex-col md:flex-row justify-between items-end md:items-center mb-6 gap-4">
                         <div>
                             <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
-                                🚨 Kalan Yemekler
+                                🚨 Surplus Food
                                 <span className="text-sm font-bold text-rose-600 bg-rose-100 px-3 py-1 rounded-full animate-pulse">
-                                    {surplusData.length} Aktif İlan
+                                    {surplusData.length} Active Alerts
                                 </span>
                             </h2>
-                            <p className="text-slate-500 mt-1">Sürdürülebilirliğe katkı sağla, yemeğini kurtar.</p>
+                            <p className="text-slate-500 mt-1">Contribute to sustainability, rescue your meal.</p>
                         </div>
                         <div className="flex gap-2">
                             <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 text-sm font-medium">
-                                <Filter size={16} /> Filtrele
+                                <Filter size={16} /> Filter
                             </button>
                             <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 text-sm font-medium">
-                                En Yakın
+                                Nearest
                             </button>
                         </div>
                     </div>
@@ -210,7 +210,7 @@
                                 <div className="relative h-48 mb-4 overflow-hidden rounded-xl">
                                     <img src={item.image} alt={item.meal} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                     <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-lg">
-                                        {item.portions} Porsiyon Kaldı
+                                        {item.portions} Portions Left
                                     </div>
                                     <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-slate-800 p-1.5 rounded-lg shadow-sm">
                                         <MapPin size={16} className="text-emerald-600"/>
@@ -230,10 +230,10 @@
                                     <div className="mt-5 pt-4 border-t border-slate-100 flex justify-between items-center">
                                         <div className="flex items-center gap-1.5 text-rose-600 text-xs font-bold bg-rose-50 border border-rose-100 px-2.5 py-1.5 rounded-lg">
                                             <Clock size={14} />
-                                            <span>Son: {item.expiresAt}</span>
+                                            <span>Exp: {item.expiresAt}</span>
                                         </div>
                                         <button className="bg-emerald-600 active:bg-emerald-700 text-white text-sm font-semibold px-5 py-2 rounded-xl shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-all">
-                                            Ayırt Et
+                                            Reserve
                                         </button>
                                     </div>
                                 </div>
@@ -246,11 +246,11 @@
                 <section>
                     <div className="flex justify-between items-center mb-6">
                         <div>
-                            <h2 className="text-2xl font-bold text-slate-800">🍽 Günün Menüsü</h2>
-                            <p className="text-slate-500 mt-1">Kampüs genelindeki tüm menüleri incele.</p>
+                            <h2 className="text-2xl font-bold text-slate-800">🍽 Today's Menu</h2>
+                            <p className="text-slate-500 mt-1">Explore all menus across campus.</p>
                         </div>
                         <button className="text-sm text-emerald-600 font-bold flex items-center hover:underline gap-1 px-4 py-2 hover:bg-emerald-50 rounded-lg transition-colors">
-                            Tümünü Gör <ArrowRight size={16}/>
+                            See All <ArrowRight size={16}/>
                         </button>
                     </div>
 
@@ -260,15 +260,15 @@
                                 <div className="flex items-center gap-4">
                                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-sm transition-transform group-hover:scale-105
                                         ${menu.type === 'Vegan' ? 'bg-green-100 text-green-600' : 
-                                        menu.type === 'Vejetaryen' ? 'bg-lime-100 text-lime-600' : 'bg-orange-100 text-orange-600'}`}>
-                                        {menu.type === 'Vegan' ? '🥦' : menu.type === 'Vejetaryen' ? '🥗' : '🍗'}
+                                        menu.type === 'Vegetarian' ? 'bg-lime-100 text-lime-600' : 'bg-orange-100 text-orange-600'}`}>
+                                        {menu.type === 'Vegan' ? '🥦' : menu.type === 'Vegetarian' ? '🥗' : '🍗'}
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-slate-800 text-lg">{menu.cafe}</h4>
                                         <p className="text-sm text-slate-500 mt-1">{menu.main} <span className="text-slate-300">•</span> {menu.side}</p>
                                         <span className={`inline-block mt-2 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider
                                         ${menu.type === 'Vegan' ? 'bg-green-50 text-green-700' : 
-                                            menu.type === 'Vejetaryen' ? 'bg-lime-50 text-lime-700' : 'bg-orange-50 text-orange-700'}`}>
+                                            menu.type === 'Vegetarian' ? 'bg-lime-50 text-lime-700' : 'bg-orange-50 text-orange-700'}`}>
                                         {menu.type}
                                         </span>
                                     </div>
@@ -291,7 +291,7 @@
                     <Icon size={64} className="text-slate-300" />
                 </div>
                 <h2 className="text-3xl font-bold text-slate-600">{title}</h2>
-                <p className="text-lg mt-3 text-center max-w-md">Bu özellik şu an geliştirme aşamasında. Yakında burada harika veriler göreceksin!</p>
+                <p className="text-lg mt-3 text-center max-w-md">This feature is currently under development. You will see great data here soon!</p>
             </div>
         );
 
@@ -303,20 +303,20 @@
             const renderContent = () => {
                 switch (activeTab) {
                     case 'home': return <HomeScreen />;
-                    case 'cafeterias': return <PlaceholderScreen title="Kafeteryalar" icon={MapPin} />;
-                    case 'waste': return <PlaceholderScreen title="Atık Takibi" icon={Trash2} />;
-                    case 'community': return <PlaceholderScreen title="Topluluk" icon={Users} />;
-                    case 'profile': return <PlaceholderScreen title="Profil" icon={User} />;
+                    case 'cafeterias': return <PlaceholderScreen title="Cafeterias" icon={MapPin} />;
+                    case 'waste': return <PlaceholderScreen title="Waste Tracking" icon={Trash2} />;
+                    case 'community': return <PlaceholderScreen title="Community" icon={Users} />;
+                    case 'profile': return <PlaceholderScreen title="Profile" icon={User} />;
                     default: return <HomeScreen />;
                 }
             };
 
             // Navigation Items
             const navItems = [
-                { id: 'home', label: 'Ana Sayfa', icon: Home },
-                { id: 'cafeterias', label: 'Kafeteryalar', icon: MapPin },
-                { id: 'waste', label: 'Atık Takibi', icon: Trash2 },
-                { id: 'community', label: 'Topluluk', icon: Users },
+                { id: 'home', label: 'Home', icon: Home },
+                { id: 'cafeterias', label: 'Cafeterias', icon: MapPin },
+                { id: 'waste', label: 'Waste Tracking', icon: Trash2 },
+                { id: 'community', label: 'Community', icon: Users },
             ];
 
             return (
@@ -359,7 +359,7 @@
                                         </div>
                                         <input 
                                             type="text" 
-                                            placeholder="Yemek ara..." 
+                                            placeholder="Search for food..." 
                                             className="pl-10 pr-4 py-2 rounded-full bg-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 w-48 transition-all hover:bg-slate-200/50"
                                         />
                                     </div>
@@ -417,7 +417,7 @@
                                 })}
                                 <div className="h-px bg-slate-100 my-2"></div>
                                 <button onClick={() => { setActiveTab('profile'); setIsMobileMenuOpen(false); }} className="p-4 rounded-xl text-left font-semibold text-slate-500 hover:bg-slate-50 flex items-center gap-3">
-                                    <User size={20} /> Profilim
+                                    <User size={20} /> My Profile
                                 </button>
                             </div>
                         )}
@@ -437,29 +437,29 @@
                                     <span className="text-xl font-bold text-slate-800">FoodLink</span>
                                 </div>
                                 <p className="text-slate-500 max-w-xs leading-relaxed">
-                                    Üniversite kampüslerinde gıda israfını önleyen, sürdürülebilirliği destekleyen ve öğrencileri buluşturan dijital platform.
+                                    A digital platform preventing food waste on university campuses, supporting sustainability, and connecting students.
                                 </p>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-800 mb-4">Hızlı Linkler</h4>
+                                <h4 className="font-bold text-slate-800 mb-4">Quick Links</h4>
                                 <ul className="space-y-2 text-slate-500 text-sm">
-                                    <li><button className="hover:text-emerald-600">Hakkımızda</button></li>
-                                    <li><button className="hover:text-emerald-600">Nasıl Çalışır?</button></li>
-                                    <li><button className="hover:text-emerald-600">Gönüllü Ol</button></li>
-                                    <li><button className="hover:text-emerald-600">İletişim</button></li>
+                                    <li><button className="hover:text-emerald-600">About Us</button></li>
+                                    <li><button className="hover:text-emerald-600">How It Works?</button></li>
+                                    <li><button className="hover:text-emerald-600">Volunteer</button></li>
+                                    <li><button className="hover:text-emerald-600">Contact</button></li>
                                 </ul>
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-800 mb-4">Yasal</h4>
+                                <h4 className="font-bold text-slate-800 mb-4">Legal</h4>
                                 <ul className="space-y-2 text-slate-500 text-sm">
-                                    <li><button className="hover:text-emerald-600">Gizlilik Politikası</button></li>
-                                    <li><button className="hover:text-emerald-600">Kullanım Şartları</button></li>
-                                    <li><button className="hover:text-emerald-600">KVKK Aydınlatma</button></li>
+                                    <li><button className="hover:text-emerald-600">Privacy Policy</button></li>
+                                    <li><button className="hover:text-emerald-600">Terms of Use</button></li>
+                                    <li><button className="hover:text-emerald-600">Data Protection</button></li>
                                 </ul>
                             </div>
                         </div>
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-100 text-center text-slate-400 text-sm">
-                            © 2024 FoodLink. Tüm hakları saklıdır.
+                            © 2024 FoodLink. All rights reserved.
                         </div>
                     </footer>
 
